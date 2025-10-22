@@ -1,10 +1,10 @@
 import pandas as pd
 import joblib
 from scripts.generate_fake_data import generate_fake_dataset
-from models.predictor import train_predict_model
+from scripts.predictor import train_predict_model
 
 def main():
-    print("Online IT Learning Analytics")
+    print("=== Online IT Learning Analytics ===")
 
     df = generate_fake_dataset(num_students=100)
     df.to_csv("data/fake_dataset.csv", index=False)
@@ -24,8 +24,12 @@ def main():
                 print("User not found.")
                 continue
 
-            student_data = df[df["user_id"] == user_id].drop(columns=["user_id", "completion_status"])
-            prob = model.predict_proba(student_data)[0][1]
+            student_data = df[df["user_id"] == user_id]
+            print("\nStudent data preview:")
+            print(student_data.drop(columns=["user_id", "completion_status"]))
+
+            features = student_data.drop(columns=["user_id", "completion_status"])
+            prob = model.predict_proba(features)[0][1]
             print(f"Predicted success probability: {prob * 100:.1f}%")
 
         except ValueError:
