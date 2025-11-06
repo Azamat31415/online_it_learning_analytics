@@ -1,12 +1,16 @@
 import pandas as pd
 import joblib
-from scripts.generate_fake_data import generate_fake_dataset
+from scripts.generate_data import generate_dataset
 from scripts.predictor import train_predict_model
+import os
+
+os.makedirs("data", exist_ok=True)
+os.makedirs("models", exist_ok=True)
 
 def main():
     print("=== Online IT Learning Analytics ===")
 
-    df = generate_fake_dataset(num_students=100)
+    df = generate_dataset(num_students=2000)
     df.to_csv("data/fake_dataset.csv", index=False)
     print("Dataset saved to data/fake_dataset.csv")
 

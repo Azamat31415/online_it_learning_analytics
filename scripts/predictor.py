@@ -17,7 +17,12 @@ def train_predict_model(df):
     models = {
         "Logistic Regression": LogisticRegression(max_iter=500),
         "Random Forest": RandomForestClassifier(n_estimators=120, random_state=42),
-        "Gradient Boosting": GradientBoostingClassifier(random_state=42)
+        "Gradient Boosting": GradientBoostingClassifier(
+            n_estimators=500,
+            learning_rate=0.05,
+            max_depth=5,
+            random_state=42
+        )
     }
 
     results = {}
@@ -30,14 +35,12 @@ def train_predict_model(df):
         print(f"\n{name} Accuracy: {acc:.3f}")
         print(classification_report(y_test, y_pred))
 
-    # Save best model
     best_model_name = max(results, key=results.get)
     best_model = models[best_model_name]
     print(f"\nBest model: {best_model_name} (Accuracy: {results[best_model_name]:.3f})")
 
     joblib.dump(best_model, "models/trained_model.pkl")
 
-    # Plot model comparison
     plt.barh(list(results.keys()), list(results.values()), color='skyblue')
     plt.xlabel("Accuracy")
     plt.title("Model Comparison")
